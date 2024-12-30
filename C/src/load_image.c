@@ -29,7 +29,7 @@ image make_image(int w, int h, int c)
 void save_image_stb(image im, const char *name)
 {
     char buff[256];
-    sprintf(buff, "%s.jpg", name);
+    sprintf(buff, "%s", name);
     unsigned char *data = calloc(im.w*im.h*im.c, sizeof(char));
     int i,k;
     for(k = 0; k < im.c; ++k){

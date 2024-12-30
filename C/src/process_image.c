@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 #include <math.h>
@@ -93,6 +94,23 @@ void clamp_image(image im)
 
             if (b<0) set_pixel(im, column, row, 2, b);
             else if (b>1) set_pixel(im, column, row, 2, b);
+        }
+}
+
+
+void split_image(image im, image *r, image *g, image *b)
+{
+    // Fill this in
+    *r = make_image(im.w, im.h, 1);
+    *g = make_image(im.w, im.h, 1);
+    *b = make_image(im.w, im.h, 1);
+
+    for (int column = 0; column < im.w; ++column)
+        for (int row = 0; row < im.h; ++row)
+        {
+            set_pixel(*r, column, row, 0, get_pixel(im, column, row, 0));
+            set_pixel(*g, column, row, 0, get_pixel(im, column, row, 1));
+            set_pixel(*b, column, row, 0, get_pixel(im, column, row, 2));
         }
 }
 
@@ -204,4 +222,54 @@ void hsv_to_rgb(image im)
             set_pixel(im, column, row, 1, g+m);
             set_pixel(im, column, row, 2, b+m);
         }
+}
+
+
+int* histogram(image im, float min, float max, int bins)
+{
+    int *histogram = calloc(bins, sizeof(int));
+    float bin_size = (max - min) / bins;
+
+    for (int column = 0; column < im.w; ++column)
+        for (int row = 0; row < im.h; ++row)
+        {
+            for (int channel = 0; channel < im.c; ++channel)
+            {
+                float value = get_pixel(im, column, row, channel);
+                int bin = (int)((value - min) / bin_size);
+                if (value == max) bin = bins - 1; // Ensure max value falls in the last bin
+                if (bin >= 0 && bin < bins) {
+                    histogram[bin]++;
+                }
+            }
+        }
+
+    return histogram;
+}
+
+
+image histogram_equlizer(image im)
+{
+    // Fill this in
+    image equlized = copy_image(im);
+    int *histogram_values = histogram(equlized, 0, 1, 256);
+    int total_pixels = equlized.w * equlized.h * equlized.c;
+    float cdf[256] = {0};
+    cdf[0] = histogram_values[0] / (float)total_pixels;
+    for (int i = 1; i < 256; ++i)
+    {
+        cdf[i] = cdf[i-1] + histogram_values[i] / (float)total_pixels;
+    }
+
+    for (int column = 0; column < equlized.w; ++column)
+        for (int row = 0; row < equlized.h; ++row)
+        {
+            for (int channel = 0; channel < equlized.c; ++channel)
+            {
+                float value = fminf(fmaxf(get_pixel(equlized, column, row, channel), 0.0f), 1.0f);
+                int bin = (int)(value * 255);
+                set_pixel(equlized, column, row, channel, cdf[bin]);
+            }
+        }
+    return equlized;
 }

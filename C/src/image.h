@@ -16,7 +16,11 @@ void rgb_to_hsv(image im);
 void hsv_to_rgb(image im);
 void shift_image(image im, int c, float v);
 void clamp_image(image im);
+void split_image(image im, image *r, image *g, image *b);
 
+// Fundamental processing operations
+int* histogram(image im, float min, float max, int bins);
+image histogram_equlizer(image im);
 
 // Loading and saving
 image make_image(int w, int h, int c);
