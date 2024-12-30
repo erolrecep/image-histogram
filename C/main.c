@@ -155,6 +155,15 @@ int main(int argc, char **argv) {
     free_image(r);
     free_image(g);
     free_image(b);
+    free_image(r_equlized);
+    free_image(g_equlized);
+    free_image(b_equlized);
+    free_image(gray_equlized);
+    free(r_hist);
+    free(g_hist);
+    free(b_hist);
+    free(gray_hist);
+    printf("Memory freed.\n");
 
     return 0;
 }
