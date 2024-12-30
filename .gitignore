@@ -4,6 +4,7 @@ Go/go.sum
 
 C/main
 C/output
+C/obj
 
 Python/output
 Python/__pycache__
