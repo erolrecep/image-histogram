@@ -61,10 +61,14 @@ int main(int argc, char **argv) {
     // Extract the image name from the input path
     char imageName[128], extension[6];
 
+    // For consistency, we want to use same name for each output.
     parseFileName(input_path, imageName, extension);
 
     printf("Image Name: %s\n", imageName);
     printf("Extension: %s\n", extension);
+
+    // replace the image name with "image"
+    strcpy(imageName, "image");
 
     char output_name[128];
     snprintf(output_name, sizeof(output_name), "%s_grayscale.%s", imageName, extension);

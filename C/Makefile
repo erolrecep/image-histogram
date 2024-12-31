@@ -24,12 +24,13 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 run: $(TARGET)
-	./$(TARGET) images/GS_team.jpg
+	./$(TARGET) images/cats.jpg
 
-plot: gnuplot gnuplot_scripts/GS_team-red_channel_histogram.gnu gnuplot_scripts/GS_team-green_channel_histogram.gnu gnuplot_scripts/GS_team-blue_channel_histogram.gnu
-	gnuplot gnuplot_scripts/GS_team-red_channel_histogram.gnu
-	gnuplot gnuplot_scripts/GS_team-green_channel_histogram.gnu
-	gnuplot gnuplot_scripts/GS_team-blue_channel_histogram.gnu
+plot: gnuplot gnuplot_scripts/image-red_channel_histogram.gnu gnuplot_scripts/image-green_channel_histogram.gnu gnuplot_scripts/image-blue_channel_histogram.gnu gnuplot_scripts/image-grayscale_histogram.gnu
+	gnuplot gnuplot_scripts/image-red_channel_histogram.gnu
+	gnuplot gnuplot_scripts/image-green_channel_histogram.gnu
+	gnuplot gnuplot_scripts/image-blue_channel_histogram.gnu
+	gnuplot gnuplot_scripts/image-grayscale_histogram.gnu
 
 clean:
 	rm -rf $(OBJ_DIR) $(TARGET)
